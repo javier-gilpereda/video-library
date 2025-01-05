@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.gilpereda.videomanager.VideoManagerApplicationState
+import com.gilpereda.videomanager.ui.sidebar.SideBar
 
 @Composable
-fun VideoManagerView() {
+fun VideoManagerView(applicationState: VideoManagerApplicationState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize(),
@@ -25,11 +27,11 @@ fun VideoManagerView() {
         ) {
             Surface(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-            ) { SideBar() }
+            ) { SideBar(applicationState) }
             Surface(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 modifier = Modifier.fillMaxHeight().weight(1f),
-            ) { ContentArea() }
+            ) { ContentArea(applicationState) }
         }
         StatusBar()
     }

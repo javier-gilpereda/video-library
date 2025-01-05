@@ -30,7 +30,7 @@ fun VideoManagerApplicationView(applicationState: VideoManagerApplicationState) 
         colorScheme = theme.colorScheme,
     ) {
         Surface {
-            VideoManagerView()
+            VideoManagerView(applicationState)
 //            ColorPalette(Theme.dark.colorScheme)
         }
     }
