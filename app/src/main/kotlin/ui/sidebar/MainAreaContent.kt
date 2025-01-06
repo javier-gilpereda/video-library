@@ -2,11 +2,16 @@ package com.gilpereda.videomanager.ui.sidebar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Movie
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.gilpereda.videomanager.ui.labels.actor.ActorManagementAreaView
@@ -32,31 +37,31 @@ sealed interface MainAreaContent {
 }
 
 data object VideoManagement : MainAreaContent {
-    override val icon: ImageVector = Icons.Default.Movie
+    override val icon: ImageVector = Icons.Outlined.Movie
 
     override val content: @Composable () -> Unit = { VideoManagementAreaView() }
 }
 
 data object ActorManagement : MainAreaContent {
-    override val icon: ImageVector = Icons.Default.Person
+    override val icon: ImageVector = Icons.Outlined.Person
 
     override val content: @Composable () -> Unit = { ActorManagementAreaView() }
 }
 
 data object ProducerManagement : MainAreaContent {
-    override val icon: ImageVector = Icons.Default.Star
+    override val icon: ImageVector = Icons.Outlined.Star
 
     override val content: @Composable () -> Unit = { ProducerManagementAreaView() }
 }
 
 data object TagManagement : MainAreaContent {
-    override val icon: ImageVector = Icons.AutoMirrored.Default.Label
+    override val icon: ImageVector = Icons.AutoMirrored.Outlined.Label
 
     override val content: @Composable () -> Unit = { TagManagementAreaView() }
 }
 
 data object Settings : MainAreaContent {
-    override val icon: ImageVector = Icons.Default.Settings
+    override val icon: ImageVector = Icons.Outlined.Settings
 
     override val content: @Composable () -> Unit = { SettingsAreaView() }
 }

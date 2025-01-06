@@ -16,6 +16,7 @@ dependencies {
     implementation(compose.foundation)
     implementation(compose.runtime)
     implementation(compose.components.resources)
+    implementation(libs.logback.classic)
 
     testImplementation(kotlin("test"))
     @OptIn(ExperimentalComposeLibrary::class)

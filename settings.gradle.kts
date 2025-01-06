@@ -12,5 +12,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "video-manager-plus"
+rootProject.name = "video-library"
 include("app")

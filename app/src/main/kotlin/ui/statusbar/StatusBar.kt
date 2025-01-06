@@ -1,4 +1,4 @@
-package com.gilpereda.videomanager.ui
+package com.gilpereda.videomanager.ui.statusbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

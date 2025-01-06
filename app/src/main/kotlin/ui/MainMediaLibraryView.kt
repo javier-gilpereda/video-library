@@ -13,9 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gilpereda.videomanager.VideoManagerApplicationState
 import com.gilpereda.videomanager.ui.sidebar.SideBar
+import com.gilpereda.videomanager.ui.statusbar.StatusBar
 
 @Composable
-fun VideoManagerView(applicationState: VideoManagerApplicationState) {
+fun MainMediaLibraryView(applicationState: VideoManagerApplicationState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize(),
@@ -27,11 +28,11 @@ fun VideoManagerView(applicationState: VideoManagerApplicationState) {
         ) {
             Surface(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-            ) { SideBar(applicationState) }
+            ) { SideBar(applicationState.activeTab) }
             Surface(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 modifier = Modifier.fillMaxHeight().weight(1f),
-            ) { ContentArea(applicationState) }
+            ) { applicationState.activeTab.value.content() }
         }
         StatusBar()
     }

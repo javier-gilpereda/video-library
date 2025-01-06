@@ -13,13 +13,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gilpereda.videomanager.VideoManagerApplicationState
 
 @Composable
 @Preview
-fun SideBar(applicationState: VideoManagerApplicationState) {
+fun SideBar(activeTab: MutableState<MainAreaContent>) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier =
@@ -30,17 +30,17 @@ fun SideBar(applicationState: VideoManagerApplicationState) {
                 .padding(horizontal = 5.dp, vertical = 8.dp),
     ) {
         MainAreaContent.areas.forEach { area ->
-            SideBarButton(applicationState, area)
+            SideBarButton(activeTab, area)
         }
     }
 }
 
 @Composable
 fun SideBarButton(
-    applicationState: VideoManagerApplicationState,
+    activeTab: MutableState<MainAreaContent>,
     tab: MainAreaContent,
 ) {
-    val selected = applicationState.activeTab == tab
+    val selected = activeTab.value == tab
     val colors =
         if (selected) {
             IconButtonDefaults.filledTonalIconButtonColors()
@@ -49,7 +49,7 @@ fun SideBarButton(
         }
     FilledTonalIconButton(
         onClick = {
-            applicationState.activeTab = tab
+            activeTab.value = tab
         },
         modifier = Modifier.height(30.dp),
         shape = MaterialTheme.shapes.small,
