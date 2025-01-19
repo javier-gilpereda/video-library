@@ -1,16 +1,24 @@
 [versions]
-kotlin = "2.0.21"
-ktlint = "12.1.2"
+android-viewmodel = "2.8.4"
 compose = "1.7.1"
 junit-jupiter = "5.10.3"
-logback="1.4.12"
+kotlin = "2.1.0"
+kotlin-argparser = "2.0.7"
+kotlinx-coroutines = "1.10.1"
+ktlint = "12.1.2"
+logback = "1.5.16"
+sqlite-jdbc = "3.47.2.0"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+kotlin-argparser = { module = "com.xenomachina:kotlin-argparser", version.ref = "kotlin-argparser" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines"}
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback"}
+sqlite-jdbc = { module ="org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc"}
+viewmodel-desktop = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "android-viewmodel"}
 
 [plugins]
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose"}
 composeCompiler =  { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin"}
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

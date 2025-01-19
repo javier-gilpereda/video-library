@@ -11,21 +11,21 @@ import com.gilpereda.videomanager.ui.MainMediaLibraryView
 import com.gilpereda.videomanager.ui.common.Theme
 import com.gilpereda.videomanager.ui.sidebar.MainAreaContent
 import com.gilpereda.videomanager.ui.sidebar.VideoManagement
-import com.gilpereda.videomanager.ui.videomanagement.LocalVideoManagementState
-import com.gilpereda.videomanager.ui.videomanagement.VideoManagementState
+import com.gilpereda.videomanager.ui.video.LocalVideoManagementState
+import com.gilpereda.videomanager.ui.video.VideoManagementState
 
 @Composable
 fun rememberApplicationState() =
     remember {
-        VideoManagerApplicationState()
+        VideoLibraryApplicationState()
     }
 
-class VideoManagerApplicationState {
+class VideoLibraryApplicationState {
     val activeTab: MutableState<MainAreaContent> = mutableStateOf(VideoManagement)
 }
 
 @Composable
-fun VideoLibraryApplicationView(applicationState: VideoManagerApplicationState) {
+fun VideoLibraryApplicationView(applicationState: VideoLibraryApplicationState) {
 //    val theme = if (isSystemInDarkTheme()) Theme.dark else Theme.light
     val theme = Theme.dark
     val videoManagementState = VideoManagementState()

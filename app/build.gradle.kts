@@ -9,6 +9,8 @@ plugins {
 }
 
 dependencies {
+    implementation(platform(libs.kotlinx.coroutines))
+
     implementation(compose.desktop.currentOs)
     implementation(compose.material)
     implementation(compose.material3)
@@ -16,7 +18,12 @@ dependencies {
     implementation(compose.foundation)
     implementation(compose.runtime)
     implementation(compose.components.resources)
+    implementation(libs.kotlin.argparser)
     implementation(libs.logback.classic)
+    implementation(libs.sqlite.jdbc)
+    implementation(libs.viewmodel.desktop)
+
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
 
     testImplementation(kotlin("test"))
     @OptIn(ExperimentalComposeLibrary::class)

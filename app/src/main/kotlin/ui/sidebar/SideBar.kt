@@ -15,7 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+
+const val SIDE_BAR_TAG = "side_bar"
 
 @Composable
 @Preview
@@ -51,7 +54,10 @@ fun SideBarButton(
         onClick = {
             activeTab.value = tab
         },
-        modifier = Modifier.height(30.dp),
+        modifier =
+            Modifier
+                .height(30.dp)
+                .testTag("${SIDE_BAR_TAG}-${tab.name}"),
         shape = MaterialTheme.shapes.small,
         colors = colors,
     ) {

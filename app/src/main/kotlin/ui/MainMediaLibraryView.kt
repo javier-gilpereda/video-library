@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gilpereda.videomanager.VideoManagerApplicationState
+import com.gilpereda.videomanager.VideoLibraryApplicationState
 import com.gilpereda.videomanager.ui.sidebar.SideBar
 import com.gilpereda.videomanager.ui.statusbar.StatusBar
 
 @Composable
-fun MainMediaLibraryView(applicationState: VideoManagerApplicationState) {
+fun MainMediaLibraryView(applicationState: VideoLibraryApplicationState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize(),
