@@ -19,6 +19,7 @@ data class FolderTreeItemStateUi(
     val expanded: Boolean,
     val folder: Folder,
     val level: Int,
+    val selected: Boolean,
 )
 
 data class FolderTreeStateUi(
@@ -37,8 +38,9 @@ class VideoManagementAreaViewModel(
         combine(
             mediaLibraryManager.mediaLibrarySource,
             folderToExpandedStateFlow(),
-        ) { mediaLibrarySource, folderToExpanded ->
-            VideoManagementUiState(FolderTreeStateUi(folderTreeItems(mediaLibrarySource, folderToExpanded)))
+            selectedFolderStateFlow(),
+        ) { mediaLibrarySource, folderToExpanded, selectedFolder ->
+            VideoManagementUiState(FolderTreeStateUi(folderTreeItems(mediaLibrarySource, folderToExpanded, selectedFolder)))
         }.stateIn(
             scope = viewModelScope,
             started = WhileUiSubscribed,
@@ -46,7 +48,7 @@ class VideoManagementAreaViewModel(
         )
 
     fun onFolderSelected(folder: Folder) {
-        settings[SELECTED_FOLDER] = folder
+        settings[SELECTED_FOLDER] = folder.id
     }
 
     fun onFolderExpandedToggled(folder: Folder) {
@@ -55,9 +57,12 @@ class VideoManagementAreaViewModel(
 
     private fun folderToExpandedStateFlow(): StateFlow<Map<String, Boolean>> = settings.getStateFlow(FOLDER_TO_EXPANDED, emptyMap())
 
+    private fun selectedFolderStateFlow(): StateFlow<String?> = settings.getStateFlow(SELECTED_FOLDER, null)
+
     private fun folderTreeItems(
         rootFolders: List<Folder>,
         folderToExpanded: Map<String, Boolean>,
+        selectedFolder: String?,
     ): List<FolderTreeItemStateUi> {
         tailrec fun go(
             rest: List<FolderTreeItemStateUi>,
@@ -66,7 +71,7 @@ class VideoManagementAreaViewModel(
             if (rest.isNotEmpty()) {
                 val current = rest.first()
                 if (current.expanded) {
-                    val newRest = current.folder.children.toStateUi(current.level + 1, folderToExpanded) + rest.drop(1)
+                    val newRest = current.folder.children.toStateUi(current.level + 1, folderToExpanded, selectedFolder) + rest.drop(1)
                     go(newRest, items + current)
                 } else {
                     go(rest.drop(1), items + current)
@@ -74,12 +79,13 @@ class VideoManagementAreaViewModel(
             } else {
                 items
             }
-        return go(rootFolders.toStateUi(0, folderToExpanded))
+        return go(rootFolders.toStateUi(0, folderToExpanded, selectedFolder))
     }
 
     private fun List<Folder>.toStateUi(
         level: Int,
         folderToExpanded: Map<String, Boolean>,
+        selectedFolder: String?,
     ): List<FolderTreeItemStateUi> =
         map { folder ->
             FolderTreeItemStateUi(
@@ -87,6 +93,7 @@ class VideoManagementAreaViewModel(
                 expanded = folderToExpanded[folder.id] ?: false,
                 folder = folder,
                 level = level,
+                selected = folder.id == selectedFolder,
             )
         }
 

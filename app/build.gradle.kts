@@ -24,6 +24,8 @@ dependencies {
     implementation(libs.viewmodel.desktop)
 
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
+    runtimeOnly(libs.androidx.data.store)
+    runtimeOnly(libs.androidx.data.store.preferences)
 
     testImplementation(kotlin("test"))
     @OptIn(ExperimentalComposeLibrary::class)

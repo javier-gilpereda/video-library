@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -90,6 +93,7 @@ private fun FolderTreeItemUI(
             Modifier
                 .wrapContentHeight()
                 .padding(start = 24.dp * stateUi.level)
+                .clickable { onClicked() }
                 .height(height)
                 .fillMaxWidth(),
     ) {
@@ -97,21 +101,24 @@ private fun FolderTreeItemUI(
         val active by interactionSource.collectIsHoveredAsState()
 
         TreeExpandIcon(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically).size(height),
             onClicked = onToggleExpanded,
             stateUi = stateUi,
         )
+        FolderIcon(modifier = Modifier.align(Alignment.CenterVertically).size(height))
         Text(
             text = stateUi.folder.name,
             color = if (active) LocalContentColor.current.copy(alpha = 0.60f) else LocalContentColor.current,
             modifier =
                 Modifier
                     .align(Alignment.CenterVertically)
-                    .clickable { onClicked() }
+                    .fillMaxHeight()
+                    .fillMaxWidth()
                     .clipToBounds()
                     .hoverable(interactionSource),
             softWrap = true,
             fontSize = fontSize,
+            fontStyle = if (stateUi.selected) FontStyle.Italic else FontStyle.Normal,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
         )
@@ -119,13 +126,12 @@ private fun FolderTreeItemUI(
 }
 
 @Composable
-private fun TreeExpandIcon(
+fun TreeExpandIcon(
     modifier: Modifier,
     onClicked: () -> Unit,
     stateUi: FolderTreeItemStateUi,
 ) = Box(
     modifier
-        .size(24.dp)
         .let { if (stateUi.expandable) it.clickable { onClicked() } else it }
         .padding(4.dp),
 ) {
@@ -137,3 +143,13 @@ private fun TreeExpandIcon(
             Icon(Icons.AutoMirrored.Default.KeyboardArrowRight, contentDescription = null, tint = LocalContentColor.current)
     }
 }
+
+@Composable
+private fun FolderIcon(modifier: Modifier) =
+    Box(modifier.padding(4.dp)) {
+        Icon(
+            Icons.Default.Folder,
+            contentDescription = null,
+            tint = LocalContentColor.current,
+        )
+    }
