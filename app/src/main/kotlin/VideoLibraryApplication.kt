@@ -38,7 +38,7 @@ fun VideoLibraryApplicationView(applicationState: VideoLibraryApplicationState) 
         ) {
             Surface {
                 MainMediaLibraryView(applicationState)
-                //            ColorPalette(Theme.dark.colorScheme)
+//                ColorPalette(MaterialTheme.colorScheme)
             }
         }
     }

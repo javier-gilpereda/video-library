@@ -1,5 +1,5 @@
 package com.gilpereda.videomanager.domain
 
-data class Video(
-    val name: String,
-)
+interface Video {
+    val name: String
+}

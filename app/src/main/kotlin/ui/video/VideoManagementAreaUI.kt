@@ -46,7 +46,12 @@ fun VideoManagementUI(
             }
         },
         rightPanel = {
-            VideoListUI()
+            Column {
+                VideoListUI(
+                    uiState.videoListUIState,
+                    videoManagementAreaViewModel::onVideoSelectedToggled,
+                )
+            }
         },
     )
 }
