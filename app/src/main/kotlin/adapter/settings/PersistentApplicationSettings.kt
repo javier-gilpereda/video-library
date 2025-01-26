@@ -1,6 +1,7 @@
 package com.gilpereda.videomanager.adapter.settings
 
 import com.gilpereda.videomanager.domain.MediaSource
+import com.gilpereda.videomanager.domain.VideoFilter
 import com.gilpereda.videomanager.service.ports.ApplicationSettings
 import com.xenomachina.argparser.ArgParser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +12,18 @@ private const val MEDIA_SOURCES = "media_sources"
 private const val CREATE_SCHEMA = """
 CREATE TABLE IF NOT EXISTS $MEDIA_SOURCES (name string, path string);
 """
+
+private val VIDEO_EXTENSIONS =
+    setOf(
+        "avi",
+        "mov",
+        "mpg",
+        "mpeg",
+        "mkv",
+        "mp4",
+        "flv",
+        "wmv",
+    )
 
 class PersistentApplicationSettings(
     parser: ArgParser,
@@ -34,6 +47,8 @@ class PersistentApplicationSettings(
 //            .getConnection(connectionString)
 //            .also { it.createStatement().executeUpdate(CREATE_SCHEMA) }
 //    }
+
+    override val defaultFilter: VideoFilter = VideoFilter.Extension(VIDEO_EXTENSIONS)
 
     override val mediaSources: List<MediaSource> =
         listOf(MediaSource(name = "root", path = workingDirectory))

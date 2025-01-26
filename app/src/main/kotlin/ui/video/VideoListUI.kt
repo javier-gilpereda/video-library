@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +28,11 @@ import androidx.compose.ui.unit.sp
 import com.gilpereda.videomanager.domain.Video
 import com.gilpereda.videomanager.library.resources.Res
 import com.gilpereda.videomanager.library.resources.default_video_cover
+import com.gilpereda.videomanager.ui.components.PanelState
+import com.gilpereda.videomanager.ui.components.VerticalSplittable
 import org.jetbrains.compose.resources.painterResource
+
+val LocalVideoPreviewPanelState = staticCompositionLocalOf { PanelState() }
 
 @Composable
 fun VideoListUI(
@@ -35,26 +40,67 @@ fun VideoListUI(
     onVideoSelectedToggle: (Video) -> Unit,
 ) {
     Surface(
-        Modifier
-            .fillMaxSize(),
+        Modifier.fillMaxSize(),
     ) {
         Column {
             VideoListTopBarUI()
-            LazyVerticalStaggeredGrid(
-                modifier =
-                    Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .fillMaxWidth()
-                        .weight(1f),
-                columns = StaggeredGridCells.Adaptive(minSize = uiState.itemSize.dp * 1.2f),
-                contentPadding = PaddingValues(4.dp),
-                verticalItemSpacing = 4.dp,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(count = uiState.videos.size) {
-                    VideoListItemUI(uiState.videos[it], uiState.itemSize, onClick = onVideoSelectedToggle)
+            if (uiState.videos.isNotEmpty()) {
+                if (uiState.selectedVideo != null) {
+                    VerticalSplittable(
+                        modifier = Modifier.weight(1f),
+                        panelState = LocalVideoPreviewPanelState.current,
+                        leftPanel = {
+                            VideoListGridUI(
+                                onVideoSelectedToggle = onVideoSelectedToggle,
+                                modifier = Modifier.fillMaxSize(),
+                                uiState = uiState,
+                            )
+                        },
+                        rightPanel = {
+                            VideoPreviewUI(uiState.selectedVideo)
+                        },
+                    )
+                } else {
+                    VideoListGridUI(
+                        onVideoSelectedToggle = onVideoSelectedToggle,
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        uiState = uiState,
+                    )
                 }
+            } else {
+                EmptyVideoListUI()
             }
+        }
+    }
+}
+
+@Composable
+private fun EmptyVideoListUI() {
+    Box(Modifier.fillMaxSize()) {
+        Text(
+            text = "No video found in folder",
+            modifier = Modifier.align(Alignment.Center),
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+private fun VideoListGridUI(
+    uiState: VideoListUIState,
+    onVideoSelectedToggle: (Video) -> Unit,
+    modifier: Modifier,
+) {
+    LazyVerticalStaggeredGrid(
+        modifier =
+            modifier.background(MaterialTheme.colorScheme.surfaceContainer),
+        columns = StaggeredGridCells.Adaptive(minSize = uiState.itemSize.dp * 1.2f),
+        contentPadding = PaddingValues(4.dp),
+        verticalItemSpacing = 4.dp,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        items(count = uiState.videos.size) {
+            VideoListItemUI(uiState.videos[it], uiState.itemSize, onClick = onVideoSelectedToggle)
         }
     }
 }

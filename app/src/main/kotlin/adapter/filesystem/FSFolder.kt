@@ -3,36 +3,24 @@ package com.gilpereda.videomanager.adapter.filesystem
 import com.gilpereda.videomanager.domain.Folder
 import com.gilpereda.videomanager.domain.MediaSource
 import com.gilpereda.videomanager.domain.Video
+import com.gilpereda.videomanager.domain.VideoFilter
 import java.io.File
 import java.io.FileFilter
 
-private val MOVIE_EXTENSIONS =
-    setOf(
-        "avi",
-        "mov",
-        "mpg",
-        "mpeg",
-        "mkv",
-        "mp4",
-        "flv",
-        "wmv",
-    )
-
 private val filterFilesOfInterest =
     FileFilter { file ->
-        !file.name.startsWith(".") && (file.isDirectory || file.extension in MOVIE_EXTENSIONS)
+        !file.name.startsWith(".") && !file.isDirectory
     }
 
 sealed class FSFolder : Folder {
     protected abstract val file: File
 
-    // TODO make it updatable
-    val videos: List<Video> by lazy {
+    fun videos(filter: VideoFilter): List<Video> =
         file
             .listFiles(filterFilesOfInterest)
             .orEmpty()
+            .filter(filter.toFileFilter::accept)
             .map { FSVideo(it) }
-    }
 
     private data class Root(
         override val name: String,

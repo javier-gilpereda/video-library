@@ -17,7 +17,7 @@ private const val SELECTED_FOLDER = "selected_folder"
 private const val SELECTED_VIDEO = "selected_video"
 
 data class VideoManagementUiState(
-    val folderTressStateUi: FolderTreeStateUi = FolderTreeStateUi(),
+    val folderTreeStateUi: FolderTreeStateUi = FolderTreeStateUi(),
     val videoListUIState: VideoListUIState = VideoListUIState(),
 )
 
@@ -33,8 +33,20 @@ class VideoManagementAreaViewModel(
             selectedVideoStateFlow(),
         ) { mediaLibrarySource, folderToExpanded, selectedFolder, selectedVideo ->
             VideoManagementUiState(
-                folderTressStateUi = FolderTreeStateUi(items = folderTreeItems(mediaLibrarySource, folderToExpanded, selectedFolder)),
-                videoListUIState = videoListStateUi(selectedFolder, selectedVideo),
+                folderTreeStateUi =
+                    FolderTreeStateUi(
+                        items =
+                            folderTreeItems(
+                                rootFolders = mediaLibrarySource,
+                                folderToExpanded = folderToExpanded,
+                                selectedFolder = selectedFolder,
+                            ),
+                    ),
+                videoListUIState =
+                    videoListStateUi(
+                        selectedFolder = selectedFolder,
+                        selectedVideo = selectedVideo,
+                    ),
             )
         }.stateIn(
             scope = viewModelScope,
@@ -97,6 +109,7 @@ class VideoManagementAreaViewModel(
         }
         return VideoListUIState(
             itemSize = 200,
+            selectedVideo = selectedVideo,
             videos = videos.map { VideoListItemUIState(it, it.name == selectedVideo?.name) },
         )
     }

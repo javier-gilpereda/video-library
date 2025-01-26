@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MediaLibraryManager(
-    applicationSettings: ApplicationSettings,
+    private val applicationSettings: ApplicationSettings,
     private val videoFileRepository: VideoFileRepository,
 ) {
     val mediaLibrarySource: StateFlow<List<Folder>> =
@@ -18,5 +18,5 @@ class MediaLibraryManager(
     fun listVideos(
         folder: Folder,
         filter: VideoFilter = VideoFilter.Noop,
-    ): List<Video> = videoFileRepository.findVideos(folder, filter)
+    ): List<Video> = videoFileRepository.findVideos(folder, applicationSettings.defaultFilter + filter)
 }

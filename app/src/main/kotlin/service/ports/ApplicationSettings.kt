@@ -1,9 +1,11 @@
 package com.gilpereda.videomanager.service.ports
 
 import com.gilpereda.videomanager.domain.MediaSource
+import com.gilpereda.videomanager.domain.VideoFilter
 import kotlinx.coroutines.flow.StateFlow
 
 interface ApplicationSettings {
+    val defaultFilter: VideoFilter
     val mediaSources: List<MediaSource>
 
     fun <T> getStateFlow(

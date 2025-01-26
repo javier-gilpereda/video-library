@@ -13,5 +13,5 @@ class FSVideoFileRepository : VideoFileRepository {
     override fun findVideos(
         folder: Folder,
         filter: VideoFilter,
-    ): List<Video> = (folder as FSFolder).videos.filter(filter::filter)
+    ): List<Video> = (folder as FSFolder).videos(filter)
 }

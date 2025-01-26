@@ -60,8 +60,8 @@ fun FolderTreeUI(
                     modifier = Modifier.fillMaxSize().withoutWidthConstraints(),
                     state = scrollState,
                 ) {
-                    items(uiState.folderTressStateUi.items.size) {
-                        val folderStateUi = uiState.folderTressStateUi.items[it]
+                    items(uiState.folderTreeStateUi.items.size) {
+                        val folderStateUi = uiState.folderTreeStateUi.items[it]
                         FolderTreeItemUI(
                             fontSize = 14.sp,
                             height = 14.sp.toDp() * 2f,
