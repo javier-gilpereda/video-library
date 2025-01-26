@@ -95,7 +95,10 @@ class VideoManagementAreaViewModel(
         if (selectedVideo !in videos) {
             onVideoDeselected()
         }
-        return VideoListUIState(videos.map { VideoListItemUIState(it, it.name == selectedVideo?.name) })
+        return VideoListUIState(
+            itemSize = 200,
+            videos = videos.map { VideoListItemUIState(it, it.name == selectedVideo?.name) },
+        )
     }
 
     private fun List<Folder>.toStateUi(
