@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.testTag
 import com.gilpereda.videomanager.ui.labels.actor.ActorManagementAreaView
 import com.gilpereda.videomanager.ui.labels.producer.ProducerManagementAreaView
 import com.gilpereda.videomanager.ui.labels.tag.TagManagementAreaView
-import com.gilpereda.videomanager.ui.settings.SettingsAreaView
+import com.gilpereda.videomanager.ui.settings.SettingsAreaUI
 import com.gilpereda.videomanager.ui.video.VideoManagementUI
 
 sealed interface MainAreaContent {
@@ -75,5 +75,5 @@ data object Settings : MainAreaContent {
     override val name: String = SETTINGS
     override val icon: ImageVector = Icons.Outlined.Settings
 
-    override val content: @Composable () -> Unit = { SettingsAreaView(Modifier.testTag(SETTINGS)) }
+    override val content: @Composable () -> Unit = { SettingsAreaUI(Modifier.testTag(SETTINGS)) }
 }

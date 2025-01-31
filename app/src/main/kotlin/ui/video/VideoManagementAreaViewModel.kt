@@ -6,15 +6,11 @@ import com.gilpereda.videomanager.di.ServiceRegistry
 import com.gilpereda.videomanager.domain.Folder
 import com.gilpereda.videomanager.domain.Video
 import com.gilpereda.videomanager.service.MediaLibraryManager
-import com.gilpereda.videomanager.service.ports.ApplicationSettings
 import com.gilpereda.videomanager.ui.common.WhileUiSubscribed
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-
-private const val FOLDER_TO_EXPANDED = "folder_to_expanded"
-private const val SELECTED_FOLDER = "selected_folder"
-private const val SELECTED_VIDEO = "selected_video"
 
 data class VideoManagementUiState(
     val folderTreeStateUi: FolderTreeStateUi = FolderTreeStateUi(),
@@ -23,14 +19,17 @@ data class VideoManagementUiState(
 
 class VideoManagementAreaViewModel(
     private val mediaLibraryManager: MediaLibraryManager = ServiceRegistry.mediaLibraryManager,
-    private val settings: ApplicationSettings,
 ) : ViewModel() {
+    private val selectedFolderFlow: MutableStateFlow<Folder?> = MutableStateFlow(null)
+    private val folderToExpandedFlow: MutableStateFlow<Map<String, Boolean>> = MutableStateFlow(emptyMap())
+    private val selectedVideoFlow: MutableStateFlow<Video?> = MutableStateFlow(null)
+
     val uiState: StateFlow<VideoManagementUiState> =
         combine(
             mediaLibraryManager.mediaLibrarySource,
-            folderToExpandedStateFlow(),
-            selectedFolderStateFlow(),
-            selectedVideoStateFlow(),
+            folderToExpandedFlow,
+            selectedFolderFlow,
+            selectedVideoFlow,
         ) { mediaLibrarySource, folderToExpanded, selectedFolder, selectedVideo ->
             VideoManagementUiState(
                 folderTreeStateUi =
@@ -55,26 +54,20 @@ class VideoManagementAreaViewModel(
         )
 
     fun onFolderSelected(folder: Folder) {
-        settings[SELECTED_FOLDER] = folder
+        selectedFolderFlow.value = folder
     }
 
     fun onFolderExpandedToggled(folder: Folder) {
-        settings[FOLDER_TO_EXPANDED] = folderToExpandedStateFlow().value.toggleState(folder.id)
+        folderToExpandedFlow.value = folderToExpandedFlow.value.toggleState(folder.id)
     }
 
     fun onVideoSelectedToggled(video: Video) {
-        settings[SELECTED_VIDEO] = video
+        selectedVideoFlow.value = video
     }
 
-    fun onVideoDeselected() {
-        settings[SELECTED_VIDEO] = null
+    private fun onVideoDeselected() {
+        selectedVideoFlow.value = null
     }
-
-    private fun folderToExpandedStateFlow(): StateFlow<Map<String, Boolean>> = settings.getStateFlow(FOLDER_TO_EXPANDED, emptyMap())
-
-    private fun selectedFolderStateFlow(): StateFlow<Folder?> = settings.getStateFlow(SELECTED_FOLDER, null)
-
-    private fun selectedVideoStateFlow(): StateFlow<Video?> = settings.getStateFlow(SELECTED_VIDEO, null)
 
     private fun folderTreeItems(
         rootFolders: List<Folder>,

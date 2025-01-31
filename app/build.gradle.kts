@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
     implementation(platform(libs.kotlinx.coroutines))
+    implementation(platform(libs.jackson.bom))
 
     implementation(compose.desktop.currentOs)
     implementation(compose.material)
@@ -20,12 +21,12 @@ dependencies {
     implementation(compose.components.resources)
     implementation(libs.kotlin.argparser)
     implementation(libs.logback.classic)
-    implementation(libs.sqlite.jdbc)
     implementation(libs.viewmodel.desktop)
+    implementation(libs.androidx.data.store)
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
-    runtimeOnly(libs.androidx.data.store)
-    runtimeOnly(libs.androidx.data.store.preferences)
 
     testImplementation(kotlin("test"))
     @OptIn(ExperimentalComposeLibrary::class)
