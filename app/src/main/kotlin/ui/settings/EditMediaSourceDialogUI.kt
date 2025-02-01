@@ -2,9 +2,7 @@ package com.gilpereda.videomanager.ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,43 +32,25 @@ fun EditMediaSourceDialogUI(
     onEditMediaSource: (MediaSource) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val title = "Edit media source"
-    AlertDialog(
-        title = {
-            Text(text = title)
-        },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                TextField(
-                    value = uiState.name,
-                    onValueChange = { uiState.name = it },
-                    label = { Text("Name") },
-                )
-                TextField(
-                    value = uiState.path,
-                    onValueChange = { uiState.path = it },
-                    label = { Text("Path") },
-                )
-            }
-        },
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            if (uiState.valid) {
-                TextButton(
-                    onClick = { onEditMediaSource(uiState.mediaSource) },
-                ) {
-                    Text("Confirm")
-                }
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismiss,
-            ) {
-                Text("Dismiss")
-            }
-        },
-    )
+    EditSettingDialogUI(
+        title = "Edit media source",
+        onDismiss = onDismiss,
+        onConfirm = { onEditMediaSource(uiState.mediaSource) },
+        showConfirmButton = uiState.valid,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            TextField(
+                value = uiState.name,
+                onValueChange = { uiState.name = it },
+                label = { Text("Name") },
+            )
+            TextField(
+                value = uiState.path,
+                onValueChange = { uiState.path = it },
+                label = { Text("Path") },
+            )
+        }
+    }
 }
