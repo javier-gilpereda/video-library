@@ -1,7 +1,6 @@
 package com.gilpereda.videomanager.ui.settings
 
 import com.gilpereda.videomanager.domain.MediaSource
-import com.gilpereda.videomanager.domain.VideoFilter
 import com.gilpereda.videomanager.service.ports.ApplicationConfig
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +8,7 @@ class SettingsViewModel(
     private val settings: ApplicationConfig,
 ) {
     val mediaSourcesFlow: Flow<List<MediaSource>> = settings.mediaSourcesFlow
-    val defaultFilterFlow: Flow<VideoFilter> = settings.defaultFilterFlow
+    val videoFileExtensionsFlow: Flow<Set<String>> = settings.videoFileExtensionsFlow
 
     suspend fun onMediaSourceAdded(mediaSource: MediaSource) {
         settings.addMediaSource(mediaSource)
@@ -23,7 +22,11 @@ class SettingsViewModel(
         settings.updateMediaSource(mediaSource)
     }
 
-    suspend fun onUpdateVideoExtensions(extensions: Set<String>) {
-        settings.updateVideoExtensions(extensions)
+    suspend fun onVideoFileExtensionAdded(extension: String) {
+        settings.addVideoFileExtension(extension)
+    }
+
+    suspend fun onVideoFileExtensionRemoved(extension: String) {
+        settings.removeVideoFileExtension(extension)
     }
 }

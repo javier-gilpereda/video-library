@@ -15,12 +15,10 @@ import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.uuid.ExperimentalUuidApi
 
 private const val APPLICATION_DATA_SUB_DIR = ".video-library"
 private const val SETTINGS_FILE = "settings.db"
 
-@OptIn(ExperimentalUuidApi::class)
 class PersistentApplicationConfig(
     parser: ArgParser,
 ) : ApplicationConfig {
@@ -47,15 +45,23 @@ class PersistentApplicationConfig(
 
     override val defaultFilter: VideoFilter = VideoFilter.Extension(VIDEO_EXTENSIONS)
 
-    override val defaultFilterFlow: Flow<VideoFilter> =
-        appSettingsStore.data.map { VideoFilter.Extension(it.videoFileExtensions) }
+    override val videoFileExtensionsFlow: Flow<Set<String>> =
+        appSettingsStore.data.map { it.videoFileExtensions }
 
     override val mediaSourcesFlow: Flow<List<MediaSource>> =
         appSettingsStore.data.map { it.mediaSources }
 
-    override suspend fun updateVideoExtensions(extensions: Set<String>) {
+    override suspend fun addVideoFileExtension(extension: String) {
         appSettingsStore.updateData { currentSettings ->
-            currentSettings.copy(videoFileExtensions = extensions)
+            val currentExtensions = currentSettings.videoFileExtensions
+            currentSettings.copy(videoFileExtensions = currentExtensions + extension)
+        }
+    }
+
+    override suspend fun removeVideoFileExtension(extension: String) {
+        appSettingsStore.updateData { currentSettings ->
+            val currentExtensions = currentSettings.videoFileExtensions
+            currentSettings.copy(videoFileExtensions = currentExtensions - extension)
         }
     }
 

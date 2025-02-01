@@ -34,11 +34,11 @@ fun SettingsAreaUI(
                 )
 
                 H1(text = "Video files extensions", modifier = Modifier.fillMaxWidth())
-//                VideoFileExtensionsUI(
-//                    videoFilesExtensionsFlow = settingsViewModel.videoFilesExtensionsFlow,
-//                    onVideoFilesExtensionsAdded = settingsViewModel::onVideoFilesExtensionsAdded,
-//                    onVideoFilesExtensionsRemoved = settingsViewModel::onVideoFilesExtensionsRemoved,
-//                )
+                VideoFileExtensionsUI(
+                    videoFileExtensionsFlow = settingsViewModel.videoFileExtensionsFlow,
+                    onExtensionAdded = settingsViewModel::onVideoFileExtensionAdded,
+                    onExtensionRemoved = settingsViewModel::onVideoFileExtensionRemoved,
+                )
             }
         }
     }

@@ -6,10 +6,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface ApplicationConfig {
     val defaultFilter: VideoFilter
-    val defaultFilterFlow: Flow<VideoFilter>
+    val videoFileExtensionsFlow: Flow<Set<String>>
     val mediaSourcesFlow: Flow<List<MediaSource>>
 
-    suspend fun updateVideoExtensions(extensions: Set<String>)
+    suspend fun addVideoFileExtension(extension: String)
+
+    suspend fun removeVideoFileExtension(extension: String)
 
     suspend fun addMediaSource(mediaSource: MediaSource)
 
