@@ -7,26 +7,30 @@ import com.gilpereda.videomanager.domain.VideoFilter
 import java.io.File
 import java.io.FileFilter
 
-private val filterFilesOfInterest =
+private val notHiddenFolder: FileFilter = FileFilter { file -> !file.name.startsWith(".") && file.isDirectory }
+
+private val notHidden =
     FileFilter { file ->
         !file.name.startsWith(".") && !file.isDirectory
     }
 
 sealed class FSFolder : Folder {
+    protected abstract val mediaSourceId: String
     protected abstract val file: File
+    override val id: String by lazy { "$mediaSourceId-${file.absolutePath}" }
 
     fun videos(filter: VideoFilter): List<Video> =
         file
-            .listFiles(filterFilesOfInterest)
+            .listFiles(notHidden)
             .orEmpty()
             .filter(filter.toFileFilter::accept)
             .map { FSVideo(it) }
 
     private data class Root(
+        override val mediaSourceId: String,
         override val name: String,
         override val file: File,
     ) : FSFolder() {
-        override val id: String = file.absolutePath
         override val children: List<FSFolder> by lazy {
             file
                 .listFiles { file: File -> file.isDirectory }
@@ -39,15 +43,14 @@ sealed class FSFolder : Folder {
         override val file: File,
         val parent: FSFolder,
     ) : FSFolder() {
+        override val mediaSourceId: String by lazy { parent.mediaSourceId }
         override val name: String = file.name
         override val children: List<FSFolder> by lazy {
             file
-                .listFiles { file: File -> file.isDirectory }
+                .listFiles(notHiddenFolder)
                 .orEmpty()
                 .map { Node(file = it, parent = this) }
         }
-
-        override val id: String = file.absolutePath
     }
 
     companion object {
@@ -57,7 +60,7 @@ sealed class FSFolder : Folder {
                     when {
                         !it.exists() -> throw IllegalStateException("Root directory ${mediaSource.path} does not exists")
                         !it.isDirectory -> throw IllegalStateException("Root directory ${mediaSource.path} is not a directory")
-                        else -> Root(name = mediaSource.name, file = it)
+                        else -> Root(mediaSourceId = mediaSource.id, name = mediaSource.name, file = it)
                     }
                 }
     }
