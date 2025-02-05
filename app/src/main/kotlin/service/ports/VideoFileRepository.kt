@@ -10,6 +10,6 @@ interface VideoFileRepository {
 
     fun findVideos(
         folder: Folder,
-        filter: VideoFilter,
+        filter: VideoFilter?,
     ): List<Video>
 }

@@ -1,4 +1,4 @@
-package com.gilpereda.videomanager.adapter.filesystem
+package com.gilpereda.videomanager.adapter.repository
 
 import com.gilpereda.videomanager.domain.VideoFilter
 import java.io.FileFilter

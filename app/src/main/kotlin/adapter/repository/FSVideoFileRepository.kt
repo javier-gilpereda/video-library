@@ -1,4 +1,4 @@
-package com.gilpereda.videomanager.adapter.filesystem
+package com.gilpereda.videomanager.adapter.repository
 
 import com.gilpereda.videomanager.domain.Folder
 import com.gilpereda.videomanager.domain.MediaSource
@@ -12,6 +12,6 @@ class FSVideoFileRepository : VideoFileRepository {
     // TODO: use an index to list the files
     override fun findVideos(
         folder: Folder,
-        filter: VideoFilter,
+        filter: VideoFilter?,
     ): List<Video> = (folder as FSFolder).videos(filter)
 }

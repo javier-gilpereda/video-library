@@ -1,9 +1,7 @@
 package adapter.test
 
 import com.gilpereda.videomanager.domain.MediaSource
-import com.gilpereda.videomanager.domain.VideoFilter
 import com.gilpereda.videomanager.service.ports.ApplicationConfig
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -13,12 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class TestApplicationConfig : ApplicationConfig {
     private var videoFileExtensions: Set<String> = setOf()
     private var mediaSources: List<MediaSource> = emptyList()
-    private val _videoFileExtensionsFlow: MutableSharedFlow<Set<String>> = MutableStateFlow(videoFileExtensions)
-    private val _mediaSourcesFlow: MutableSharedFlow<List<MediaSource>> = MutableStateFlow(mediaSources)
 
-    override val defaultFilter: VideoFilter = VideoFilter.Noop
-    override val videoFileExtensionsFlow: Flow<Set<String>> = _videoFileExtensionsFlow
-    override val mediaSourcesFlow: Flow<List<MediaSource>> = _mediaSourcesFlow
+    override val videoFileExtensionsFlow: MutableSharedFlow<Set<String>> = MutableStateFlow(videoFileExtensions)
+
+    override val mediaSourcesFlow: MutableSharedFlow<List<MediaSource>> = MutableStateFlow(mediaSources)
 
     override suspend fun addVideoFileExtension(extension: String) {
         videoFileExtensions += extension
@@ -46,10 +42,12 @@ class TestApplicationConfig : ApplicationConfig {
     }
 
     private suspend fun emitVideoFileExtensions(extensions: Set<String>) {
-        _videoFileExtensionsFlow.emit(extensions)
+        videoFileExtensions = extensions
+        videoFileExtensionsFlow.emit(extensions)
     }
 
     private suspend fun emitMediaSources(mediaSources: List<MediaSource>) {
-        _mediaSourcesFlow.emit(mediaSources)
+        this.mediaSources = mediaSources
+        mediaSourcesFlow.emit(mediaSources)
     }
 }

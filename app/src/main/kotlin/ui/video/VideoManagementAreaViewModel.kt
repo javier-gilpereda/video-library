@@ -92,7 +92,7 @@ class VideoManagementAreaViewModel(
         return go(rootFolders.toStateUi(0, folderToExpanded, selectedFolder))
     }
 
-    private fun videoListStateUi(
+    private suspend fun videoListStateUi(
         selectedFolder: Folder?,
         selectedVideo: Video?,
     ): VideoListUIState {

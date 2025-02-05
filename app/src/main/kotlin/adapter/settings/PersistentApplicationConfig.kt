@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStoreFactory
 import com.gilpereda.videomanager.di.ServiceRegistry
 import com.gilpereda.videomanager.domain.AppSettings
 import com.gilpereda.videomanager.domain.MediaSource
-import com.gilpereda.videomanager.domain.VideoFilter
 import com.gilpereda.videomanager.service.ports.ApplicationConfig
 import com.xenomachina.argparser.ArgParser
 import kotlinx.coroutines.flow.Flow
@@ -42,8 +41,6 @@ class PersistentApplicationConfig(
     private val appSettingsStore: DataStore<AppSettings> by lazy {
         DataStoreFactory.create(ServiceRegistry.settingsSerializer) { settingsFile }
     }
-
-    override val defaultFilter: VideoFilter = VideoFilter.Extension(VIDEO_EXTENSIONS)
 
     override val videoFileExtensionsFlow: Flow<Set<String>> =
         appSettingsStore.data.map { it.videoFileExtensions }

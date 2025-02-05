@@ -1,4 +1,4 @@
-package com.gilpereda.videomanager.adapter.filesystem
+package com.gilpereda.videomanager.adapter.repository
 
 import com.gilpereda.videomanager.domain.Folder
 import com.gilpereda.videomanager.domain.MediaSource
@@ -19,11 +19,11 @@ sealed class FSFolder : Folder {
     protected abstract val file: File
     override val id: String by lazy { "$mediaSourceId-${file.absolutePath}" }
 
-    fun videos(filter: VideoFilter): List<Video> =
+    fun videos(filter: VideoFilter?): List<Video> =
         file
             .listFiles(notHidden)
             .orEmpty()
-            .filter(filter.toFileFilter::accept)
+            .filter((filter ?: VideoFilter.Noop).toFileFilter::accept)
             .map { FSVideo(it) }
 
     private data class Root(

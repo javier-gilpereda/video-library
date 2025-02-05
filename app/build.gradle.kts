@@ -19,6 +19,7 @@ dependencies {
     implementation(compose.foundation)
     implementation(compose.runtime)
     implementation(compose.components.resources)
+    implementation(libs.bramp.ffmpeg)
     implementation(libs.kotlin.argparser)
     implementation(libs.logback.classic)
     implementation(libs.viewmodel.desktop)

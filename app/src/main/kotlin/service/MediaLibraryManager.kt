@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MediaLibraryManager(
-    private val applicationConfig: ApplicationConfig,
+    applicationConfig: ApplicationConfig,
     private val videoFileRepository: VideoFileRepository,
 ) {
     val mediaLibrarySource: Flow<List<Folder>> =
@@ -17,6 +17,6 @@ class MediaLibraryManager(
 
     fun listVideos(
         folder: Folder,
-        filter: VideoFilter = VideoFilter.Noop,
-    ): List<Video> = videoFileRepository.findVideos(folder, applicationConfig.defaultFilter + filter)
+        filter: VideoFilter? = null,
+    ): List<Video> = videoFileRepository.findVideos(folder, filter)
 }
